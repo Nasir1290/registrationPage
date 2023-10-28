@@ -3,24 +3,19 @@ const express = require('express');
 const cors = require('cors');
 const dotenv = require('dotenv');
 const mongoose = require('mongoose');
-const { newUser } = require('./controller/userController');
+const router = require('./router/router');
 const app = express();
 dotenv.config();
 const port = process.env.PORT;
 const db_password = process.env.DB_PASSWORD;
-const router = express.Router();
+
 
 // middle wars 👇
 app.use(express.json());
 app.use(cors());
-app.use('/', router)
 
-// methods 👇
-
-router.post('/', newUser)
-    .get('/', (req, res) => {
-        res.json({ status: 'ok' })
-    })
+// routes 👇
+app.use('/users', router)
 
 
 // mongoose connection👇
