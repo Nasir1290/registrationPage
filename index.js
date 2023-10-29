@@ -8,6 +8,8 @@ const app = express();
 dotenv.config();
 const port = process.env.PORT;
 const db_password = process.env.DB_PASSWORD;
+const bcrypt = require ('bcrypt');
+const cookieParser = require('cookie-parser')
 
 
 // middle wars 👇
