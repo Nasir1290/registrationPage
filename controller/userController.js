@@ -13,6 +13,7 @@ const newUser = async (req, res) => {
         res.status(201).json(savedUser);
     } catch (error) {
         console.log('error occured while save new user :=> ', error)
+        res.send("invalid user info")
     }
 }
 
