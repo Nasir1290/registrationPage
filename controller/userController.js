@@ -3,7 +3,7 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
 
-const newUser = async (req, res) => {
+exports.signUp = async (req, res) => {
     const { email, name, password } = req.body;
 
     try {
@@ -20,4 +20,27 @@ const newUser = async (req, res) => {
     }
 }
 
-module.exports = { newUser };
+exports.login = async(req,res) => {
+    const {email,password} = req.body;
+    const user = await User.findOne({email})
+    
+    try {
+        
+        if(!user) {
+             res.status(401).json({Error:'user not found'})
+         }
+         else{
+             const matchedPassword = await bcrypt.compare(password,user.password);
+             if(matchedPassword){
+                 res.status(200).json({status:"success"});
+             }
+             else{
+                 res.status(400).json({Error:"authentication failed"})
+             }
+         }
+    } catch (error) {
+        
+        res.status(500).json({Error:"internal server error"})
+    }
+       
+}
