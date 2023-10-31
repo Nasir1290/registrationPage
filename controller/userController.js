@@ -35,7 +35,7 @@ exports.login = async(req,res) => {
                  res.status(200).json({status:"success"});
              }
              else{
-                 res.status(400).json({Error:"authentication failed"})
+                 res.status(400).json({Error:"authenti cation failed"})
              }
          }
     } catch (error) {
