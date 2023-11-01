@@ -40,7 +40,7 @@ exports.login = async(req,res) => {
          }
     } catch (error) {
         
-        res.status(500).json({Error:"internal serve r error"})
+        res.status(500).json({Error:"internal server error"})
     }
        
 }
