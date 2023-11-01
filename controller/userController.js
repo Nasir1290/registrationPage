@@ -40,7 +40,7 @@ exports.login = async(req,res) => {
          }
     } catch (error) {
         
-        res.status(500).json({Error:"internal ser  ver error"})
+        res.status(500).json({Error:"internal ser ver error"})
     }
        
 }
