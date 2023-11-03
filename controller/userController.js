@@ -9,19 +9,12 @@ exports.signUp = async (req, res) => {
     try {
         // Hash the password
         const hashPassword = await bcrypt.hash(password, saltRounds);
-
         // Create a new user with hashed password
         const user = new User({ name, email, password: hashPassword });
-
         // Generate a token for the user
-        const token = jwt.sign({ email: req.body.email }, 'shhhh');
-
         // Assign the token to the user
-        user.token = token;
-
         // Save the user to the database
         const savedUser = await user.save();
-
         // Send the saved user as a response
         res.status(201).json(savedUser);
     } catch (error) {
@@ -48,6 +41,7 @@ exports.login = async (req, res) => {
 
             if (matchedPassword) {
                 // If passwords match, return success response
+                const token = jwt.sign({ email: req.body.email }, 'shhhh');
                 res.status(200).json({ status: "success" });
             } else {
                 // If passwords do not match, return error response
