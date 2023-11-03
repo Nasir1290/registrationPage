@@ -40,7 +40,8 @@ exports.login = async (req, res) => {
 
         if (!user) {
             // If user not found, return error response
-            res.status(401).json({ Error: 'user not found' });
+            res.json({ status: 'email error' });
+            res.status(401)
         } else {
             // Compare the input password with the stored hashed password
             const matchedPassword = await bcrypt.compare(password, user.password);
@@ -50,7 +51,8 @@ exports.login = async (req, res) => {
                 res.status(200).json({ status: "success" });
             } else {
                 // If passwords do not match, return error response
-                res.status(400).json({ Error: "authentication failed" });
+                res.json({ status: "password error" });
+                res.status(400)
             }
         }
     } catch (error) {
