@@ -2,6 +2,8 @@ const User = require("../models/userModel");
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
+const dotenv = require('dotenv');
+dotenv.config()
 
 exports.signUp = async (req, res) => {
     const { email, name, password } = req.body;
@@ -41,7 +43,7 @@ exports.login = async (req, res) => {
 
             if (matchedPassword) {
                 // If passwords match, return success response
-                const token = jwt.sign({ email:user.email }, 'secret-web-token');
+                const token = jwt.sign({ email:user.email }, process.env.SECRET_KEY);
                 res.status(200).json({ status: "success" });
             } else {
                 // If passwords do not match, return error response
