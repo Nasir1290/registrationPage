@@ -26,7 +26,7 @@ exports.signUp = async (req, res) => {
         res.status(201).json(savedUser);
     } catch (error) {
         // Handle error if any occurred
-        console.error('Error occurred while saving a new user:', error);
+        console.error('Error occurred while saving a ne w user:', error);
         res.status(400).json({ error: "Invalid user information" });
     }
 }
