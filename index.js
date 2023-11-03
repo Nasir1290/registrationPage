@@ -8,13 +8,13 @@ const app = express();
 dotenv.config();
 const port = process.env.PORT;
 const db_password = process.env.DB_PASSWORD;
-const bcrypt = require ('bcrypt');
+const bcrypt = require('bcrypt');
 const cookieParser = require('cookie-parser')
 
 
 // middle wars 👇
 app.use(express.json());
-app.use(cors());
+app.use(cors({ origin: ['http://localhost:5173'], methods: ["GET", "POST"], credentials: true }));
 
 // routes 👇
 app.use('/users', router)
