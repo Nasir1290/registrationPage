@@ -43,9 +43,10 @@ exports.login = async (req, res) => {
 
             if (matchedPassword) {
                 // If passwords match, return success response
-                const token = jwt.sign({ email:user.email }, process.env.SECRET_KEY,{expiresIn:'1d'});
-                res.cookie('token',token);
-                res.status(200).json({ status: "success" });
+                const token = jwt.sign({ email: user.email }, process.env.SECRET_KEY, { expiresIn: '1d', httpOnly: true });
+                res.json({ status: "success" });
+                res.cookie('token', token);
+                res.status(200)
             } else {
                 // If passwords do not match, return error response
                 res.json({ status: "password error" });
@@ -55,6 +56,11 @@ exports.login = async (req, res) => {
     } catch (error) {
         // Handle error if any occurred
         res.status(500).json({ Error: "internal server error" });
-        
+
     }
+}
+
+exports.userVerification = async (req, res) => {
+    const token = req.cookies.token;
+    res.json({ status: "success" })
 }
