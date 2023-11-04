@@ -43,7 +43,7 @@ exports.login = async (req, res) => {
 
             if (matchedPassword) {
                 // If passwords match, return success response
-                const token = jwt.sign({ email: user.email }, process.env.SECRET_KEY, { expiresIn: '1d', httpOnly: true });
+                const token = jwt.sign({ email: user.email }, process.env.SECRET_KEY, { expiresIn: '1d' });
                 res.json({ status: "success" });
                 res.cookie('token', token);
                 res.status(200)
@@ -62,5 +62,6 @@ exports.login = async (req, res) => {
 
 exports.userVerification = async (req, res) => {
     const token = req.cookies.token;
+    console.log(token)
     res.json({ status: "success" })
 }
