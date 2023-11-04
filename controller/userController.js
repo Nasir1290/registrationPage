@@ -2,8 +2,8 @@ const User = require("../models/userModel");
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
-const dotenv = require('dotenv');
-dotenv.config()
+const env = require('dotenv');
+env.config()
 
 exports.signUp = async (req, res) => {
     const { email, name, password } = req.body;
@@ -26,6 +26,7 @@ exports.signUp = async (req, res) => {
     }
 }
 
+
 exports.login = async (req, res) => {
     const { email, password } = req.body;
 
@@ -35,8 +36,9 @@ exports.login = async (req, res) => {
 
         if (!user) {
             // If user not found, return error response
-            res.json({ status: 'email error' });
-            res.status(401)
+            res.json({ status: 'email error' })
+                .status(401);
+
         } else {
             // Compare the input password with the stored hashed password
             const matchedPassword = await bcrypt.compare(password, user.password);
@@ -44,24 +46,38 @@ exports.login = async (req, res) => {
             if (matchedPassword) {
                 // If passwords match, return success response
                 const token = jwt.sign({ email: user.email }, process.env.SECRET_KEY, { expiresIn: '1d' });
-                res.json({ status: "success" });
-                res.cookie('token', token);
-                res.status(200)
+                res.cookie('token', token)
+                    .json({ status: "success" })
+
+                    .status(200)
             } else {
                 // If passwords do not match, return error response
-                res.json({ status: "password error" });
-                res.status(400)
+                res.json({ status: "password error" })
+                    .status(400)
             }
         }
     } catch (error) {
         // Handle error if any occurred
-        res.status(500).json({ Error: "internal server error" });
+        res.status(500).json({ Error: "internal server error:=>", error });
 
     }
 }
-
+exports.tokenVerification = (req, res, next) => {
+    const token = req.cookie.token;
+    if (!token) {
+        return res.json({ status: 'token error' })
+    }
+    else {
+        jwt.verify(token, process.env.SECRET_KEY, (error, decoded) => {
+            if (error) {
+                return res.json({ status: 'token error' })
+            }
+            else {
+                next()
+            }
+        })
+    }
+}
 exports.userVerification = async (req, res) => {
-    const token = req.cookies.token;
-    console.log(token)
     res.json({ status: "success" })
 }
